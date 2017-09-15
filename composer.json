@@ -1,0 +1,27 @@
+{
+    "name": "karster/image",
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "*",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "karster\\image\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "karster\\image\\tests\\": "tests/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lukáš Hrdlička",
+            "email": "luk.hrdlicka@gmail.com"
+        }
+    ]
+}
