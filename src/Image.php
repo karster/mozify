@@ -34,7 +34,8 @@ class Image
         $this->configuration = $configuration;
 
         $this->image = imagecreatefromstring(file_get_contents($this->configuration->imageSrc));
-        imagetruecolortopalette($this->image, false, $this->configuration->colorDepth);
+        imagealphablending($this->image, false);
+        imagesavealpha($this->image, false);
         list($this->width, $this->height, $this->type) = getimagesize($this->configuration->imageSrc);
     }
 
@@ -56,10 +57,13 @@ class Image
 
     public function breakIntoColorArray()
     {
+        imagetruecolortopalette($this->image, false, $this->configuration->colorDepth);
+        $row_index = 0;
         for ($y = 0; $y < $this->height; $y += $this->configuration->searchWindow) {
             for ($x = 0; $x < $this->width; $x += $this->configuration->searchWindow) {
-                $this->colorArray[$y][$x] = $this->extractColor($x, $y);
+                $this->colorArray[$row_index][] = $this->extractColor($x, $y);
             }
+            $row_index++;
         }
     }
 
@@ -72,27 +76,29 @@ class Image
     {
         $color = imagecolorat($this->image, $x, $y);
         $rgba = imagecolorsforindex($this->image, $color);
-        $out = '';
 
         if (isset($rgba['alpha'])) {
             unset($rgba['alpha']);
         }
 
+        $hex = "#";
+
         foreach ($rgba as $c) {
-            $hex = base_convert($c, 10, 16);
-            $out .= ($c < 16) ? ("0" . $hex) : $hex;
+            $hex .= str_pad(dechex($c), 2, "0", STR_PAD_LEFT);
         }
 
-        return '#' . strtoupper($out);
+        return $hex;
     }
 
     public function process()
     {
         if (!empty($this->configuration->width) && !empty($this->configuration->height)) {
             $this->resize();
+        } else {
+            $white = imagecolorallocate($this->image, 255, 255, 255);
+            imagefill($this->image, 0, 0, $white);
+            imagecolortransparent($this->image, $white);
         }
-
-
 
         $this->breakIntoColorArray();
 
@@ -112,16 +118,6 @@ class Image
     public function getHeight()
     {
         return $this->height;
-    }
-
-    public function getMostCommonColor()
-    {
-        $result = [];
-        foreach ($this->colorArray as $row) {
-            $result = array_merge($result, $row);
-        }
-
-        return array_keys($result, max($result))[0];
     }
 
     public function getColorArray()

@@ -153,7 +153,7 @@ class Mozify
             $return .= $this->getCSS().PHP_EOL;
             $return .= $mso_hack->begin().PHP_EOL;
             $return .= $wrapper->begin().PHP_EOL;
-            $return .= $this->getImageReplacement().PHP_EOL;
+            $return .= $this->getImageReplacement($configuration).PHP_EOL;
         }
         $return .= $mosaic.PHP_EOL;
 
@@ -184,7 +184,6 @@ class Mozify
     {
         $width = $image->getWidth();
         $height = $image->getHeight();
-        $top_color = $image->getMostCommonColor();
         $color_array = $image->getColorArray();
         $result = $this->createTableCells($color_array);
 
@@ -193,7 +192,6 @@ class Mozify
             ->setSharpness($this->searchWindow)
             ->setWidth($width)
             ->setHeight($height)
-            ->setMostCommonColor($top_color)
             ->generate();
     }
 
@@ -236,7 +234,6 @@ class Mozify
     {
         $color_group = [];
         $count = 1;
-
         foreach ($row as $index => $color) {
             if (isset($row[$index + 1])) {
                 if ($row[$index + 1] == $color) {
@@ -270,18 +267,18 @@ class Mozify
     }
 
     /**
-     * Príprava kontaineru pre vloženie mozify
+     * @param Configuration $configuration
      * @return string
      */
-    private function getImageReplacement()
+    private function getImageReplacement(Configuration $configuration)
     {
         return <<<HTML
         <div class="c0" style="width:0;height:0;overflow:visible;float:left;position:absolute">
             <table cellspacing="0" cellpadding="0" class="c0">
                 <tbody>
                     <tr>
-                        <td style="background: url({$this->imageSrc}) no-repeat top / {$this->width}px {$this->height}px;">
-                            <div class="c0" style="width:{$this->width}px;height:{$this->height}px"></div>
+                        <td style="background: url({$this->imageSrc}) no-repeat top / {$configuration->width}px {$configuration->height}px;">
+                            <div class="c0" style="width:{$configuration->width}px;height:{$configuration->height}px"></div>
                         </td>
                     </tr>
                 </tbody>

@@ -13,8 +13,6 @@ class MosaicTable
 
     private $sharpness;
 
-    private $mostCommonColor;
-
     public function setRows($rows)
     {
         $this->rows = $rows;
@@ -43,22 +41,16 @@ class MosaicTable
         return $this;
     }
 
-    public function setMostCommonColor($color)
-    {
-        $this->mostCommonColor = $color;
-
-        return $this;
-    }
-
     public function generate()
     {
+        $most_common_color = $this->getMostCommonColor();
         $options = [
             'width' => $this->width,
             'height' => $this->height,
             'cellspacing' => 0,
             'cellpadding' => 0,
             'border' => 0,
-            'bgcolor' => $this->mostCommonColor,
+            'bgcolor' => $most_common_color,
             'class ' => 'c0'
         ];
 
@@ -80,7 +72,7 @@ class MosaicTable
                     $column_options['colspan'] = $column["colspan"];
                 }
 
-                if ($this->mostCommonColor != $column["bgcolor"]) {
+                if ($most_common_color != $column["bgcolor"]) {
                     $column_options['bgcolor'] = $column['bgcolor'];
                 }
 
@@ -109,5 +101,20 @@ class MosaicTable
     private function endTag($tag_name)
     {
         return "</$tag_name>";
+    }
+
+    private function getMostCommonColor()
+    {
+        $result = [];
+        foreach ($this->rows as $row) {
+            foreach ($row as $cell) {
+                $result[] = $cell['bgcolor'];
+            }
+        }
+
+        $count=array_count_values($result);
+        arsort($count);
+
+        return array_keys($count)[0];
     }
 }
