@@ -37,6 +37,18 @@ class Image
         list($this->width, $this->height, $this->type) = getimagesize($this->configuration->imageSrc);
     }
 
+    private function calculateDimension()
+    {
+        if(!empty($this->configuration->width) && empty($this->configuration->height)) {
+            $this->configuration->height = $this->configuration->width * $this->height / $this->width;
+        } else if(!empty($this->configuration->height) && empty($this->configuration->width)) {
+            $this->configuration->width = $this->width * $this->configuration->height / $this->height;
+        } else if (empty($this->configuration->width) && empty($this->configuration->height)) {
+            $this->configuration->width = $this->width;
+            $this->configuration->height = $this->height;
+        }
+    }
+
     /**
      * @return resource
      */
@@ -90,7 +102,8 @@ class Image
 
     public function process()
     {
-        if (!empty($this->configuration->width) && !empty($this->configuration->height)) {
+        if (!empty($this->configuration->width) || !empty($this->configuration->height)) {
+            $this->calculateDimension();
             $this->resize();
         } else {
             $white = imagecolorallocate($this->image, 255, 255, 255);
