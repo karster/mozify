@@ -140,11 +140,11 @@ class Mozify
         $configuration = $this->createConfiguration();
         $image = (new Image($configuration))->process();
 
-        $configuration->width = $image->getWidth();
-        $configuration->height = $image->getHeight();
+        $color_array = $image->getColorArray();
+        $rows = $this->createTableCells($color_array);
 
-        $mosaic = $this->getMosaic($image);
-
+        $configuration = $image->updateConfiguration();
+        $mosaic_table = new MosaicTable($configuration);
         $mso_hack = new MsoHack($configuration);
         $wrapper = new Wrapper($configuration);
         $return = '';
@@ -155,7 +155,8 @@ class Mozify
             $return .= $wrapper->begin().PHP_EOL;
             $return .= $this->getImageReplacement($configuration).PHP_EOL;
         }
-        $return .= $mosaic.PHP_EOL;
+
+        $return .= $mosaic_table->setRows($rows)->generate().PHP_EOL;
 
         if(!$this->test) {
             $return .= $wrapper->end().PHP_EOL;
@@ -178,21 +179,6 @@ class Mozify
             'imageSrc' => $this->imageSrc,
             'altText' => $this->altText
         ]);
-    }
-
-    private function getMosaic(Image $image)
-    {
-        $width = $image->getWidth();
-        $height = $image->getHeight();
-        $color_array = $image->getColorArray();
-        $result = $this->createTableCells($color_array);
-
-        return (new MosaicTable())
-            ->setRows($result)
-            ->setSharpness($this->searchWindow)
-            ->setWidth($width)
-            ->setHeight($height)
-            ->generate();
     }
 
     private function createTableCells($color_array)

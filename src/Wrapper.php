@@ -22,7 +22,6 @@ class Wrapper
             <tbody>
                 <tr>
                     <td style="padding:0;" class="c0">
-
 HTML;
 
     }

@@ -10,8 +10,6 @@ class Image
      */
     private $image;
 
-    private $colorDepth = 5;
-
     private $width;
 
     private $height;
@@ -110,18 +108,16 @@ class Image
         return $this->image;
     }
 
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    public function getHeight()
-    {
-        return $this->height;
-    }
-
     public function getColorArray()
     {
         return $this->colorArray;
+    }
+
+    public function updateConfiguration()
+    {
+        $this->configuration->width = $this->width;
+        $this->configuration->height = $this->height;
+
+        return $this->configuration;
     }
 }

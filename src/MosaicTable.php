@@ -7,11 +7,15 @@ class MosaicTable
 {
     private $rows;
 
-    private $width;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-    private $height;
-
-    private $sharpness;
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
     public function setRows($rows)
     {
@@ -20,33 +24,12 @@ class MosaicTable
         return $this;
     }
 
-    public function setWidth($width)
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function setHeight($height)
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
-    public function setSharpness($sharpness)
-    {
-        $this->sharpness = $sharpness;
-
-        return $this;
-    }
-
     public function generate()
     {
         $most_common_color = $this->getMostCommonColor();
         $options = [
-            'width' => $this->width,
-            'height' => $this->height,
+            'width' => $this->configuration->width,
+            'height' => $this->configuration->height,
             'cellspacing' => 0,
             'cellpadding' => 0,
             'border' => 0,
@@ -64,7 +47,7 @@ class MosaicTable
                 $column_options = [];
                 $column_options['width'] = $column['width'];
 
-                if ($column['height'] > $this->sharpness) {
+                if ($column['height'] > $this->configuration->searchWindow) {
                     $column_options['height'] = $column["height"];
                 }
 
