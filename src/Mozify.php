@@ -184,29 +184,21 @@ class Mozify
     private function createTableCells($color_array)
     {
         $result = [];
-        foreach($color_array as $row => &$cols)
-        {
-            $cols = $this->groupSameColor($cols);
+        $previous_row = [];
+        $same_row = 0;
+        foreach($color_array as $row_index => $current_row) {
+            $current_row = $this->groupSameColor($current_row);
 
-            foreach($cols as $i => $col)
-            {
-                $rows = 1;
-                $j    = $row;
-
-                $result[$row][$i] = $col;
-
-                if(count($color_array[$row]) == 1)
-                {
-                    while(isset($color_array[$j][$i]) && count($color_array[$j]) == 1 && $color_array[$j][$i]["bgcolor"] == $col["bgcolor"] && $color_array[$j][$i]["colspan"] == $col["colspan"])
-                    {
-                        $result[$row][$i]["height"] = $this->searchWindow*$rows;
-
-                        $j++;
-                        $rows++;
-                    }
-                }
+            if ($current_row == $previous_row) {
+                $result[$same_row][0]["height"] += $this->searchWindow;
+                continue;
             }
+
+            $result[$row_index] = $current_row;
+            $previous_row = $current_row;
+            $same_row = $row_index;
         }
+
 
         return $result;
     }
@@ -216,7 +208,7 @@ class Mozify
      * @param  array $row riadok
      * @return array
      */
-    private function groupSameColor($row)
+    private function groupSameColor(array $row)
     {
         $color_group = [];
         $count = 1;
