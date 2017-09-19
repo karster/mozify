@@ -40,9 +40,9 @@ class Image
     private function calculateDimension()
     {
         if(!empty($this->configuration->width) && empty($this->configuration->height)) {
-            $this->configuration->height = $this->configuration->width * $this->height / $this->width;
+            $this->configuration->height = floor($this->configuration->width * $this->height / $this->width);
         } else if(!empty($this->configuration->height) && empty($this->configuration->width)) {
-            $this->configuration->width = $this->width * $this->configuration->height / $this->height;
+            $this->configuration->width = floor($this->width * $this->configuration->height / $this->height);
         } else if (empty($this->configuration->width) && empty($this->configuration->height)) {
             $this->configuration->width = $this->width;
             $this->configuration->height = $this->height;
