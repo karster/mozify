@@ -1,5 +1,5 @@
 {
-    "name": "karster/image",
+    "name": "karster/mozify",
     "require": {
         "php": "^7.0"
     },
