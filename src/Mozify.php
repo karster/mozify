@@ -147,23 +147,23 @@ class Mozify
         $mosaic_table = new MosaicTable($configuration);
         $mso_hack = new MsoHack($configuration);
         $wrapper = new Wrapper($configuration);
-        $return = '';
+        $table = '';
 
         if(!$this->test) {
-            $return .= $this->getCSS().PHP_EOL;
-            $return .= $mso_hack->begin().PHP_EOL;
-            $return .= $wrapper->begin().PHP_EOL;
-            $return .= $this->getImageReplacement($configuration).PHP_EOL;
+            $table .= $this->getCSS().PHP_EOL;
+            $table .= $mso_hack->begin().PHP_EOL;
+            $table .= $wrapper->begin().PHP_EOL;
+            $table .= $this->getImageReplacement($configuration).PHP_EOL;
         }
 
-        $return .= $mosaic_table->setRows($rows)->generate().PHP_EOL;
+        $table .= $mosaic_table->setRows($rows)->generate().PHP_EOL;
 
         if(!$this->test) {
-            $return .= $wrapper->end().PHP_EOL;
-            $return .= $mso_hack->end().PHP_EOL;
+            $table .= $wrapper->end().PHP_EOL;
+            $table .= $mso_hack->end().PHP_EOL;
         }
 
-        return $return;
+        return $table;
     }
 
     /**
