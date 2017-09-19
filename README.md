@@ -1,7 +1,7 @@
 # Mozify
 
 [![Build Status](https://travis-ci.org/karster/mozify.svg?branch=master)][travis]
-[![Latest Stable Version](https://poser.pugx.org/karster/image/v/stable)][version]
+[![Latest Stable Version](https://poser.pugx.org/karster/mozify/v/stable)][version]
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 > Email client blocks images by default. Mozify is way how to serve images to your customers.
