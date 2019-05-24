@@ -107,6 +107,8 @@ class Mozify
     public function setTest(bool $test)
     {
         $this->test = $test;
+        
+        return $this;
     }
 
     /**
