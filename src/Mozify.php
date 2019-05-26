@@ -134,6 +134,22 @@ class Mozify
     }
 
     /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
      * Generovanie mozify
      * @return string
      */
@@ -146,6 +162,10 @@ class Mozify
         $rows = $this->createTableCells($color_array);
 
         $configuration = $image->updateConfiguration();
+
+        $this->width = $configuration->width;
+        $this->height = $configuration->height;
+
         $mosaic_table = new MosaicTable($configuration);
         $mso_hack = new MsoHack($configuration);
         $wrapper = new Wrapper($configuration);
