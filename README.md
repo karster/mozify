@@ -13,13 +13,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```shell
-composer require karster/mozify:"dev-master"
+composer require karster/mozify:"*"
 ```
 
 or add
 
 ```
-"karster/mozify": "dev-master"
+"karster/mozify": "*"
 ```
 
 to the require section of your composer.json.
